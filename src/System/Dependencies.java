@@ -47,7 +47,7 @@ public class Dependencies {
 	/*
 	 * function findCommand parse line to get command
 	 */
-	private static void findCommand(String data, ArrayList<Stack> trackDependencies, ArrayList<Stack> trackInstalled,
+	public static void findCommand(String data, ArrayList<Stack> trackDependencies, ArrayList<Stack> trackInstalled,
 			HashMap<String, ArrayList> stackPlacement, HashMap<String, Integer> count,
 			HashMap<String, Integer> waitingToBeRemoved, HashMap<String, Integer> notExplicitlyAdded,
 			FileWriter myWriter) throws IOException {
@@ -114,7 +114,7 @@ public class Dependencies {
 	/*
 	 * Remove components that are installed, check for dependencies
 	 */
-	private static void remove(String substring, ArrayList<Stack> trackDependencies, ArrayList<Stack> trackInstalled,
+	public static void remove(String substring, ArrayList<Stack> trackDependencies, ArrayList<Stack> trackInstalled,
 			HashMap<String, ArrayList> stackPlacement, HashMap<String, Integer> count,
 			HashMap<String, Integer> waitingToBeRemoved, HashMap<String, Integer> notExplicitlyAdded,
 			FileWriter myWriter) throws IOException {
@@ -147,7 +147,6 @@ public class Dependencies {
 	}
 
 	/*
-	 * printOutResultOfRemove Input String, Data Structures, and Write to File
 	 * If all instances of component have been removed print out remove else let
 	 * user know component is still needed
 	 */
@@ -170,7 +169,7 @@ public class Dependencies {
 	/*
 	 * Find all not explicitly added components and remove them
 	 */
-	private static boolean removeNotExplicitlyAdded(Stack<?> stack, HashMap<String, Integer> waitingToBeRemoved,
+	public static boolean removeNotExplicitlyAdded(Stack<?> stack, HashMap<String, Integer> waitingToBeRemoved,
 			HashMap<String, Integer> count, String prev, HashMap<String, Integer> notExplicitlyAdded,
 			FileWriter myWriter) throws IOException {
 		Stack<String> digStack = new Stack<String>();
@@ -216,7 +215,10 @@ public class Dependencies {
 
 	}
 
-	private static void install(String substring, ArrayList<Stack> trackDependencies, ArrayList<Stack> trackInstalled,
+	/*
+	 * Install components and check for dependencies
+	 */
+	public static void install(String substring, ArrayList<Stack> trackDependencies, ArrayList<Stack> trackInstalled,
 			HashMap<String, ArrayList> stackPlacement, HashMap<String, Integer> count,
 			HashMap<String, Integer> notExplicitlyAdded, FileWriter myWriter) throws IOException {
 		/*
@@ -283,7 +285,7 @@ public class Dependencies {
 	/*
 	 * Add to the count map to keep track of occurrences of components installed
 	 */
-	private static void addToCountMap(HashMap<String, Integer> count, String install, FileWriter myWriter)
+	public static void addToCountMap(HashMap<String, Integer> count, String install, FileWriter myWriter)
 			throws IOException {
 		if (!count.containsKey(install)) {
 			System.out.println("    Installing " + install);
@@ -298,16 +300,16 @@ public class Dependencies {
 	}
 
 	/*
-	 * Install all components for the str that do not have any dependencies
+	 * Install all components for the str that have dependencies
 	 */
-	private static void installDependents(Queue<String> checkInstalled, HashMap<String, ArrayList> stackPlacement,
+	public static void installDependents(Queue<String> checkInstalled, HashMap<String, ArrayList> stackPlacement,
 			HashMap<String, Integer> count, ArrayList<Stack> trackDependencies, ArrayList<Stack> trackInstalled) {
 		while (0 < checkInstalled.size()) {
 			String str = checkInstalled.remove();
 			ArrayList<?> arr = stackPlacement.get(str);
 			ArrayList<Integer> foundInStacks = new ArrayList<Integer>();
 			/*
-			 * Install all components of str that do not have dependencies
+			 * Install all components of str have dependencies
 			 */
 			for (int i = 0; i < arr.size(); i++) {
 				int number = (int) arr.get(i);
